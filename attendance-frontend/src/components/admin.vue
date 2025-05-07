@@ -42,16 +42,19 @@
       </tbody>
       </table>
     </div>
-     
+     <button @click = "startClass">start class</button>
 </template>
 <style>
     *{
        font-weight: bold;
        color : rgba(47, 44, 44, 0.688);
     }
+    button{
+      margin-left: 4px;
+    }
 </style>
 <script>
-   import { fetchAllStudents,addStudent } from '@/services/api';
+   import { fetchAllStudents,addStudent,classInit } from '@/services/api';
    export default{
       data(){
           return{
@@ -72,6 +75,16 @@
                  console.log(err);
                  alert("error");
              }
+        },
+        async startClass(){
+           try{
+               await classInit();
+               alert("Class stablished succesfully");
+           }
+           catch(err){
+            alert("Class stablished unsuccesfully");
+            console.log(err);
+          }
         },
         search(){
              if(this.records !== null){

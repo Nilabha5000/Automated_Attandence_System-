@@ -22,8 +22,8 @@
                     console.log("Sending:", this.credentials);
                     const response = await checkDetails(this.credentials);
                     const student = response.student;
-                    this.$emit("signed-in",student);
-                   // alert("signin succesfully");
+                    localStorage.setItem("student", JSON.stringify(student));
+                    this.$router.push("/dashboard")
                 }
                 catch(error){
                        console.log(error.message);

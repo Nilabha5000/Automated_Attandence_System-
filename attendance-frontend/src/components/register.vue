@@ -1,6 +1,6 @@
 <template>
     <div class = "container">
-     
+        <h1>Admin Registration form</h1>
        <div class = "section">
         <form @submit.prevent = "registerAdmin">
           <input v-model="admin.name" placeholder="Admin Name">
@@ -12,6 +12,24 @@
     </div>
 </template>
 
+<style scoped>
+   .section{
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      
+   }
+   form{
+      
+      display : flex;
+      flex-direction: column;
+   }
+   input , button{
+       text-align: center;
+        margin-top : 20px;
+        width : 500px;
+   }
+</style>
 <script>
    import { addAdmin } from '@/services/api';
  export default{
