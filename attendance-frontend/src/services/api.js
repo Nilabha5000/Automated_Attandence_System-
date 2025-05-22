@@ -72,6 +72,19 @@ export const checkDetails = async(studentData) =>{
     throw error;
   }
 }
+
+export const checkAdminDetails = async(AdminData) =>{
+    try{
+        const response = await axios.post(`${API_URL}/adminSignin`,AdminData,{
+            headers: { "Content-Type": "application/json" }});
+        return response;
+    }
+    catch(error){
+      console.error("Axios Error:", error.message);
+      console.error("Axios Response Data:", error.response?.data || "No response received");
+      throw error;
+    }
+}
 export const fetchAllStudents = async()=>{
    try{
         const response = await axios.get(`${API_URL}/all-students`);

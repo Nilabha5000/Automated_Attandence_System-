@@ -13,11 +13,23 @@
 </template>
 
 <style scoped>
+   .container{
+      padding: 15px;
+       width : 50%;
+       margin : auto;
+       background-color: rgba(255, 255, 255, 0.703);
+   }
+   *{
+       color : black;
+   }
    .section{
       display: flex;
       align-items: end;
       justify-content: center;
       
+   }
+   h1{
+      text-align: center;
    }
    form{
       
@@ -25,9 +37,16 @@
       flex-direction: column;
    }
    input , button{
+        font-size: medium;
        text-align: center;
+       border-radius: 15px;
+       padding : 20px;
         margin-top : 20px;
         width : 500px;
+   }
+   button{
+       color : white;
+       font-weight: bold;
    }
 </style>
 <script>

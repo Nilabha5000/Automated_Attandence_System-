@@ -5,7 +5,7 @@
     <h3>{{ student.days }}</h3>
    <!-- <button @click="$emit('logout')">Logout</button>  -->
     </div>
-    <button @click="isCameraOn = !isCameraOn">mark attendence</button>
+    <button  @click="isCameraOn = !isCameraOn">mark attendence</button>
   
   
   <div class="section" v-if = "isCameraOn">
@@ -95,12 +95,99 @@
   }
 </script>
 <style scoped>
-  .section{
-      background-color: #ffe6e6;
-      margin : auto;
-      width: 50%;
-  }
-  .present-days-section{
-     margin-top : 30px;
-  }
+  .student-details-section {
+  background-color: #f0f8ff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-details-section h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.student-details-section h2 {
+  font-size: 1.5rem;
+  color: #555;
+}
+
+.student-details-section h3 {
+  font-size: 1.2rem;
+  color: #777;
+}
+
+/* Button to toggle camera */
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+/* QR Section */
+.section {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 500px;
+  text-align: center;
+}
+
+.section h2 {
+  margin-bottom: 10px;
+  color: #856404;
+}
+
+.section p {
+  font-style: italic;
+  color: #6c757d;
+}
+
+/* Attendance list section */
+.present-days-section {
+  margin: 30px auto;
+  max-width: 500px;
+  background-color: #e6f7ff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #b3e0ff;
+}
+
+.present-days-section h2 {
+  margin-bottom: 10px;
+  color: #0077b6;
+}
+
+.present-days-section ol {
+  padding-left: 20px;
+}
+
+.present-days-section li {
+  padding: 5px 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Message when no attendance */
+p {
+  text-align: center;
+  color: #888;
+  margin-top: 20px;
+}
 </style>
