@@ -3,7 +3,7 @@
     <h1>{{ student.name }}</h1>
     <h2>{{ student.collageID }}</h2>
     <h3>{{ student.days }}</h3>
-   <!-- <button @click="$emit('logout')">Logout</button>  -->
+    <button @click="$router.push('/signin')">Logout</button>
     </div>
     <button  @click="isCameraOn = !isCameraOn">mark attendence</button>
   
@@ -50,7 +50,8 @@
             console.log(studentData);
             if(this.student.collageID === studentData.collageID){
               await markAttendance(studentData);
-              alert("attendence mark succesfully");
+              this.getPresentDaysList();
+              alert("attendence marked succesfully!");
             }
             else{
                throw "Provided QR code is not for " + this.student.name; 

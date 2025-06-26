@@ -3,14 +3,15 @@
       <p>Search student by collage ID</p>
         <input v-model = "collageID" placeholder = "collage Id">
         <button @click="search">Search</button>
+        <button @click="$router.push('/signin')">Logout</button>
         <button @click = "toAdd = !toAdd">add student</button>
         <div class = "container" v-if = "toAdd">
-     
+        
         <div class = "section">
            <form @submit.prevent = "registerStudent">
            <input v-model="student.name" placeholder="Student Name">
            <input v-model = "student.collageID" placeholder="Collage ID">
-          <input v-model = "student.password" placeholder="Password">
+          <input type = "password" v-model = "student.password" placeholder="Password">
           <button type = "submit">add</button>
           </form>
       </div>

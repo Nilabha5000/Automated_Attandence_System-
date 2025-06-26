@@ -52,7 +52,7 @@ export const getPresentDays = async(studentData)=>{
 export const markAttendance = async(studentData) =>{
       try{
          const response = axios.post(`${API_URL}/mark-attendance`, studentData);
-         return response.data;
+         return response.message;
       }
       catch(err){
         console.error(err.message);

@@ -65,6 +65,7 @@
                 const response = await addAdmin(this.admin);
                 console.log(response);
                 alert("admin registered successfully!");
+                this.$router.push("/signin");
               }
               catch(error){
                   console.log(error.message);

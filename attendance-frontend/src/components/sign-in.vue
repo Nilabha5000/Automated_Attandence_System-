@@ -1,4 +1,6 @@
 <template>
+     
+ 
       <form @submit.prevent = "signIn">
           <div v-if = "selectedRole === 'student'">
             <input v-model = credentials.collageID placeholder="Collage ID">
@@ -58,6 +60,10 @@
 </script>
 
 <style scoped>
+  h1{
+      text-align: center;
+      color: black;
+  }
   form {
   max-width: 400px;
   margin: 50px auto;
