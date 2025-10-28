@@ -1,4 +1,5 @@
 <template>
+    <img v-if = "studentImage" :src = "studentImage">
     <div class = "student-details-section">
     <h1>{{ student.name }}</h1>
     <h2>{{ student.collageID }}</h2>
@@ -6,15 +7,19 @@
     <button @click="$router.push('/signin')">Logout</button>
     </div>
     <button  @click="isCameraOn = !isCameraOn">mark attendence</button>
-  
-  
   <div class="section" v-if = "isCameraOn">
     <p v-if="!isCameraReady">Loading camera...</p>
-          <h2>Scan QR Code</h2>
+         <button @click = "isQrAttendance = !isQrAttendance">mark attendance by QR code </button>
+         <button @click = "isFaceAttendance = !isFaceAttendance">Mark attendance by face</button>
         <qr-stream
         @decode="onDecode"
         @init-error="onInitFail"
+        v-if = "isQrAttendance"
       />
+      <div v-if = "isFaceAttendance">
+          <FaceAttendance id = "Face-attendance"/>
+      </div>
+    
   </div>
   
   <div class = "present-days-section" v-if = "presentDaysList.length !== 0">
@@ -28,16 +33,33 @@
 
 <script>
    import { QrStream } from 'vue3-qr-reader';
-   import { markAttendance,getPresentDays } from '@/services/api';
+   import FaceAttendance from './FaceAttendance.vue';
+   import { ref } from 'vue';
+   import { markAttendance,getPresentDays,showStudentImage } from '@/services/api';
    import { formatDate } from '@vueuse/core';
+
+   
   export default{
     components:{
-        QrStream
+        QrStream,
+        FaceAttendance
+    },
+    setup(){
+      const camRef = ref();
+      const img = ref(null);
+      
+      return{
+          camRef,
+          img
+      }
     },
     data(){
         return{
             isCameraOn:false,
             isCameraReady:false,
+            isQrAttendance : false,
+            isFaceAttendance:false,
+            studentImage : null,
             student : {},
             presentDaysList : [],
         }
@@ -84,6 +106,7 @@
           day: 'numeric'
         });
       },
+       
     },
  
 
@@ -92,10 +115,16 @@
       this.student = JSON.parse(stored);
 
       this.getPresentDaysList();
+
+        showStudentImage({ collageID: this.student.collageID })
+    .then((img) => {
+      this.studentImage = img;  // already base64 string with prefix
+    })
+    .catch((err) => console.error(err));
     }
   }
 </script>
-<style scoped>
+<style >
   .student-details-section {
   background-color: #f0f8ff;
   padding: 20px;
@@ -105,7 +134,10 @@
   max-width: 500px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
+#Face-attendance{
+     width : 50%;
+     height : 50%;
+}
 .student-details-section h1 {
   font-size: 2rem;
   color: #333;

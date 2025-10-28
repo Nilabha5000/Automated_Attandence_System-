@@ -12,8 +12,11 @@
            <input v-model="student.name" placeholder="Student Name">
            <input v-model = "student.collageID" placeholder="Collage ID">
           <input type = "password" v-model = "student.password" placeholder="Password">
+           <faceAttendance @sendBlob="handleBlob"/>
           <button type = "submit">add</button>
           </form>
+           
+          
       </div>
      </div>
         <div class = "student-record" v-if="studentRecord !== null">
@@ -47,17 +50,24 @@
 </template>
 <script>
    import { fetchAllStudents,addStudent,classInit } from '@/services/api';
+import faceAttendance from './FaceAttendance.vue';
    export default{
+     components:{
+         faceAttendance
+     },
       data(){
           return{
             records : null,
             toAdd:false,
             collageID : "",
             studentRecord : null,
-            student : {collageID : "", name : "" , password : ""},
+            student : {collageID : "", name : "" , password : "",studentImage: null}
           }
       },
       methods:{
+        handleBlob(blob){
+             this.student.studentImage = blob;
+        },
         async getRecords(){
              try{
                 const Response = await fetchAllStudents();
@@ -94,11 +104,13 @@
         },
         async registerStudent(){
             console.log("Registering student:", this.student);
+               
               try{
                 const response = await addStudent(this.student);
                 console.log(response);
                 alert("Student registered successfully!");
               }
+                
               catch(error){
                   console.log(error.message);
                   alert("Error adding student: " + (error.response?.data?.message || "Server not responding"));

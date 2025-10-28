@@ -22,8 +22,10 @@ const addStudent = async (req, res) => {
         student.name = req.body.name;
         student.collageID = req.body.collageID;
         student.password = req.body.password;
+        student.studentImage = req.file.buffer;
+        console.log(req.file.buffer);
         await student.save();
-        const response = await axios.post('http://localhost:5000/generate-qr' , {collageID : req.body.collageID});
+        const response = await axios.post('http://localhost:5000/generate-qr' , {collageID : req.body.collageID , image : student.studentImage.toString("base64")});
         console.log(response.data.qr_url);
         return res.status(201).json({ message: "Student added successfully" });
     } catch (err) {
@@ -31,7 +33,17 @@ const addStudent = async (req, res) => {
         return res.status(500).json({ message: "Failed to add student" });
     }
 };
+const getImage = async(req, res) =>{
+    try{
+          const blobImage = await Student.findOne({collageID : req.body.collageID});
 
+          const base64Image = blobImage.studentImage.toString("base64");
+          return res.status(201).json({message : "image found" , image : `data:image/png;base64,${base64Image}`});
+    }
+    catch(err){
+        res.status(404).json({message : "image not found"});
+    }
+}
 const studentSignin = async (req, res)=>{
     console.log(req.body);
     const{CollageID,password} = req.body;
@@ -106,4 +118,4 @@ const getListOfPresentDays = async(req,res) =>{
         return res.status(502).json({message : "Error  "});
     }
 }
-module.exports = {getAllStudents,addStudent,studentSignin,attendanceMark,getListOfPresentDays};
+module.exports = {getAllStudents,addStudent,studentSignin,attendanceMark,getListOfPresentDays,getImage};

@@ -2,7 +2,16 @@ import axios from "axios";
 const API_URL = "http://localhost:4000/api";
 export const addStudent = async(studentData) => {
       try{
-        const response = await axios.post(`${API_URL}/addstudent`,studentData);
+        const formData = new FormData();
+        formData.append("collageID", studentData.collageID);
+        formData.append("name", studentData.name);
+        formData.append("password", studentData.password);
+        formData.append("studentImage",studentData.studentImage);
+        console.log(formData);
+        const response = await axios.post(`${API_URL}/addstudent`,formData,{
+           headers: { "Content-Type": "multipart/form-data" }
+        });
+
         return response.data;
       }
       catch(error){
@@ -72,7 +81,20 @@ export const checkDetails = async(studentData) =>{
     throw error;
   }
 }
-
+export const showStudentImage = async (studentData) =>{
+    try{
+       const response = await axios.post(
+            `${API_URL}/getImage`,studentData,{
+              headers : {"Content-Type": "application/json"}
+            }
+        );
+      console.log(response.data.image);
+      return response.data.image;
+    }
+    catch(err){
+           throw err;
+    }
+}
 export const checkAdminDetails = async(AdminData) =>{
     try{
         const response = await axios.post(`${API_URL}/adminSignin`,AdminData,{

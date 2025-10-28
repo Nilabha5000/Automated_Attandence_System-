@@ -1,9 +1,11 @@
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
-const { getAllStudents, addStudent, studentSignin , attendanceMark,getListOfPresentDays} = require("../controllers/studentControllers");
-
+const { getAllStudents, addStudent, studentSignin , attendanceMark,getListOfPresentDays,getImage} = require("../controllers/studentControllers");
+const upload = multer({ storage: multer.memoryStorage() });
 router.get("/all-students", getAllStudents);
-router.post("/addstudent", addStudent);
+router.post("/getImage",getImage);
+router.post("/addstudent",upload.single("studentImage"), addStudent);
 router.post("/signin", studentSignin);
 router.post("/mark-attendance",attendanceMark);
 router.post("/get-all-days",getListOfPresentDays);

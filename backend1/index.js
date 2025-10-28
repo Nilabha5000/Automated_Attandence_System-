@@ -19,8 +19,12 @@ mongoose.connect("mongodb://127.0.0.1:27017/attendanceDB",{
 }).then(()=> console.log("db connected"))
 .catch(err => console.log("error to connect" + err));
 
+app.use(express.json({ limit: "70mb" }));
+app.use(express.urlencoded({ limit: "70mb", extended: true }));
+
 app.use("/api",studentRoutes);
 app.use("/api",adminRoutes);
+
 app.listen(4000,()=>{
     console.log("App is running ....");
 });
