@@ -60,12 +60,30 @@ export const getPresentDays = async(studentData)=>{
 }
 export const markAttendance = async(studentData) =>{
       try{
+        console.log(studentData);
          const response = axios.post(`${API_URL}/mark-attendance`, studentData);
          return response.message;
       }
       catch(err){
         console.error(err.message);
         throw err;
+      }
+}
+export const markAttendanceByFace = async(studentData) =>{
+      try{
+
+        
+        const formData = new FormData();
+        formData.append("collageID",studentData.collageID);
+        formData.append("studentImage",studentData.studentImage);
+        const response = await axios.post(`${API_URL}/mark-attendance-face`,formData,{
+           headers: { "Content-Type": "multipart/form-data" }
+        });
+        return response.message;
+      }
+      catch(err){
+         console.log(err);
+         alert("error to mark attendance by face");
       }
 }
 export const checkDetails = async(studentData) =>{

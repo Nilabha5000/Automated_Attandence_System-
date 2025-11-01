@@ -72,11 +72,13 @@ const attendanceMark = async(req,res) =>{
 
     try{
         const att = await attendance.findOne({date : currDate});
-         
+        console.log("inside mark addendance "+req.body.collageID);
         const stu = await Student.findOne({collageID : req.body.collageID});
         if (!stu) {
+            
             return res.status(404).json({ message: "Student not found" });
         }
+        
           // Prevent marking attendance twice
           if (!att.students.includes(req.body.collageID)) {
             att.students.push(req.body.collageID);
@@ -96,6 +98,49 @@ const attendanceMark = async(req,res) =>{
     }
 }
 
+const attendanceMarkByFace = async(req,res)=>{
+       const currDate = new Date().toISOString().split('T')[0];
+
+    try{
+        const att = await attendance.findOne({date : currDate});
+        console.log("inside mark addendance "+req.body.collageID);
+        const stu = await Student.findOne({collageID : req.body.collageID});
+        console.log(stu);
+       const recievedImage = req.file.buffer;
+       const storedImage = stu.studentImage;
+       console.log("inside face attendance ");
+       console.log("Recieved:", recievedImage.length, "Stored:", storedImage.length);
+        if (!stu) {
+            
+            return res.status(404).json({ message: "Student not found" });
+        }
+          // Prevent marking attendance twice
+          if (!att.students.includes(req.body.collageID)) {
+
+            const response = await axios.post("http://localhost:5000/face-compare",{image1 : recievedImage.toString("base64"), image2 : storedImage.toString("base64")});
+            if(response.data.status === "success"){
+                att.students.push(req.body.collageID);
+                stu.lastAttendance = currDate;
+                stu.daysPresent += 1;
+                await att.save();
+                await stu.save();
+            }
+            else{
+                return res.status(404).json({message : "face does not match"});
+            }
+        } 
+        else
+        {
+            return res.status(400).json({ message: "Attendance already marked for today" });
+        }
+        return res.status(200).json({ message: "Attendance marked successfully" });
+
+    }
+    catch(err){
+        console.error(err);
+        return res.status(500).json({ message: "Server error while marking attendance" });
+    }
+}
 const getListOfPresentDays = async(req,res) =>{
     console.log(req.body);
     try{
@@ -118,4 +163,4 @@ const getListOfPresentDays = async(req,res) =>{
         return res.status(502).json({message : "Error  "});
     }
 }
-module.exports = {getAllStudents,addStudent,studentSignin,attendanceMark,getListOfPresentDays,getImage};
+module.exports = {getAllStudents,addStudent,studentSignin,attendanceMark,attendanceMarkByFace,getListOfPresentDays,getImage};

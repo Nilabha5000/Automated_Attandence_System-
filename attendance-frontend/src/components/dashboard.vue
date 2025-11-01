@@ -17,7 +17,8 @@
         v-if = "isQrAttendance"
       />
       <div v-if = "isFaceAttendance">
-          <FaceAttendance id = "Face-attendance"/>
+          <FaceAttendance id = "Face-attendance" @send-blob="handleBlob" />
+          <button @click = "markByFace">send image to mark attendance</button>
       </div>
     
   </div>
@@ -35,7 +36,7 @@
    import { QrStream } from 'vue3-qr-reader';
    import FaceAttendance from './FaceAttendance.vue';
    import { ref } from 'vue';
-   import { markAttendance,getPresentDays,showStudentImage } from '@/services/api';
+   import { markAttendance,getPresentDays,showStudentImage,markAttendanceByFace } from '@/services/api';
    import { formatDate } from '@vueuse/core';
 
    
@@ -65,6 +66,11 @@
         }
     },
     methods:{
+      handleBlob(blob){
+           this.student.image = null;
+           this.student.image = blob;
+           console.log("inside handleblob "+ blob);
+      },
       async onDecode(decodedText){
            //this.isCameraReady = true;
            try{
@@ -84,6 +90,18 @@
               alert(err);
            }
            this.isCameraOn = false;
+
+      },
+      async markByFace(){
+         
+          const response = await markAttendanceByFace({collageID : this.student.collageID, studentImage : this.student.image})
+          .then(()=>{
+             alert("attendance mark succesfully");
+          })
+          .catch(()=>{
+              alert("attendance failed");
+          })
+
 
       },
       onInitFail(error) {
@@ -113,7 +131,7 @@
     mounted(){
       const stored = localStorage.getItem("student");
       this.student = JSON.parse(stored);
-
+      console.log(this.student);
       this.getPresentDaysList();
 
         showStudentImage({ collageID: this.student.collageID })
