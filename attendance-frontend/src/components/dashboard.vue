@@ -1,12 +1,16 @@
 <template>
-    <img v-if = "studentImage" :src = "studentImage">
+    
+    <img v-if = "studentImage" :src = "studentImage" id = "student-image">
     <div class = "student-details-section">
     <h1>{{ student.name }}</h1>
     <h2>{{ student.collageID }}</h2>
     <h3>{{ student.days }}</h3>
     <button @click="$router.push('/signin')">Logout</button>
     </div>
-    <button  @click="isCameraOn = !isCameraOn">mark attendence</button>
+    <div class = "mark-section">
+       <button  @click="isCameraOn = !isCameraOn" id = "mark-btn">mark attendence</button>
+    </div>
+    
   <div class="section" v-if = "isCameraOn">
     <p v-if="!isCameraReady">Loading camera...</p>
          <button @click = "isQrAttendance = !isQrAttendance">mark attendance by QR code </button>
@@ -143,66 +147,126 @@
   }
 </script>
 <style >
-  .student-details-section {
-  background-color: #f0f8ff;
-  padding: 20px;
-  border-radius: 12px;
+ body {
+  background: linear-gradient(135deg, #f0f9ff, #cfefff);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* =============================
+   Student Image
+============================= */
+#student-image {
+  display: block;
+  margin: 30px auto 10px;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border: 4px solid #4caf50;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#student-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+/* =============================
+   Student Details Section
+============================= */
+.student-details-section {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
   text-align: center;
   margin: 20px auto;
   max-width: 500px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
-#Face-attendance{
-     width : 50%;
-     height : 50%;
+
+.student-details-section:hover {
+  transform: translateY(-5px);
 }
+
 .student-details-section h1 {
-  font-size: 2rem;
-  color: #333;
+  font-size: 1.8rem;
+  color: #2e7d32;
+  margin-bottom: 8px;
 }
 
 .student-details-section h2 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #555;
+  margin-bottom: 5px;
 }
 
 .student-details-section h3 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #777;
+  margin-bottom: 15px;
 }
 
-/* Button to toggle camera */
+/* =============================
+   Buttons
+============================= */
 button {
-  display: block;
-  margin: 20px auto;
-  padding: 12px 24px;
-  background-color: #4caf50;
+  display: inline-block;
+  margin: 15px auto;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #4caf50, #45a049);
   color: white;
   font-size: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(72, 187, 120, 0.3);
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: #388e3c;
+  background: linear-gradient(135deg, #45a049, #388e3c);
+  transform: translateY(-2px);
+}
+.mark-section{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#mark-btn{
+    padding: 12px 24px;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+/* Logout button */
+.student-details-section button {
+  background: linear-gradient(135deg, #f44336, #e53935);
 }
 
-/* QR Section */
+.student-details-section button:hover {
+  background: linear-gradient(135deg, #e53935, #c62828);
+}
+
+/* =============================
+   QR / Camera Section
+============================= */
 .section {
-  background-color: #fff3cd;
-  border: 1px solid #ffeeba;
-  padding: 20px;
-  border-radius: 12px;
-  margin: 20px auto;
-  max-width: 500px;
+  background-color: #fffbea;
+  border: 1px solid #ffe28a;
+  padding: 25px;
+  border-radius: 14px;
+  margin: 25px auto;
+  max-width: 520px;
   text-align: center;
-}
-
-.section h2 {
-  margin-bottom: 10px;
-  color: #856404;
+  box-shadow: 0 4px 12px rgba(255, 222, 100, 0.3);
 }
 
 .section p {
@@ -210,35 +274,73 @@ button:hover {
   color: #6c757d;
 }
 
-/* Attendance list section */
-.present-days-section {
-  margin: 30px auto;
-  max-width: 500px;
-  background-color: #e6f7ff;
-  padding: 20px;
+/* Face Attendance Component */
+#Face-attendance {
+  width: 60%;
+  height: auto;
+  margin: 15px auto;
+  display: block;
   border-radius: 12px;
+  border: 2px dashed #4caf50;
+  padding: 8px;
+}
+
+/* =============================
+   Attendance List Section
+============================= */
+.present-days-section {
+  margin: 35px auto;
+  max-width: 520px;
+  background-color: #e8faff;
+  padding: 25px;
+  border-radius: 14px;
   border: 1px solid #b3e0ff;
+  box-shadow: 0 4px 12px rgba(0, 150, 255, 0.15);
 }
 
 .present-days-section h2 {
-  margin-bottom: 10px;
   color: #0077b6;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .present-days-section ol {
-  padding-left: 20px;
+  padding-left: 25px;
 }
 
 .present-days-section li {
-  padding: 5px 0;
+  padding: 6px 0;
   font-size: 1rem;
   color: #444;
 }
 
-/* Message when no attendance */
+/* =============================
+   Message when no attendance
+============================= */
 p {
   text-align: center;
   color: #888;
   margin-top: 20px;
+  font-size: 1rem;
+}
+
+/* =============================
+   Responsive Layout
+============================= */
+@media (max-width: 600px) {
+  #student-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .student-details-section,
+  .section,
+  .present-days-section {
+    width: 90%;
+  }
+
+  button {
+    width: 80%;
+  }
 }
 </style>
